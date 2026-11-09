@@ -1,5 +1,6 @@
 using System;
 using Avalonia;
+using Avalonia.Fonts.Inter;
 
 namespace IwIUniversalTool.Avalonia;
 
@@ -11,5 +12,6 @@ internal static class Program
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
+            .WithInterFont()
             .LogToTrace();
 }

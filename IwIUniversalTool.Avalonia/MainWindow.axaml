@@ -5,7 +5,8 @@
         Width="1180" Height="760"
         MinWidth="900" MinHeight="520"
         Background="#1E1E1E"
-        Title="IwI Universal Tool — Avalonia (M1.6)">
+        FontFamily="Inter"
+        Title="IwI Universal Tool — Avalonia (M1.7)">
 
   <Window.Resources>
     <SolidColorBrush x:Key="WindowBg" Color="#1E1E1E"/>
@@ -26,6 +27,7 @@
       <Setter Property="Foreground" Value="#AAAAAA"/>
       <Setter Property="Margin" Value="0,10,0,4"/>
     </Style>
+
     <Style Selector="Button.tool">
       <Setter Property="Background" Value="#333337"/>
       <Setter Property="Foreground" Value="#FFFFFF"/>
@@ -35,7 +37,23 @@
       <Setter Property="CornerRadius" Value="5"/>
       <Setter Property="FontSize" Value="12"/>
       <Setter Property="Margin" Value="0,0,5,0"/>
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Name="bg" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5" Padding="{TemplateBinding Padding}">
+            <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"
+                              HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Border>
+        </ControlTemplate>
+      </Setter>
     </Style>
+    <Style Selector="Button.tool:pointerover /template/ Border#bg">
+      <Setter Property="Background" Value="#3E3E42"/>
+    </Style>
+    <Style Selector="Button.tool:disabled /template/ Border#bg">
+      <Setter Property="Opacity" Value="0.4"/>
+    </Style>
+
     <Style Selector="Button.accent">
       <Setter Property="Background" Value="#00A2ED"/>
       <Setter Property="Foreground" Value="#FFFFFF"/>
@@ -44,7 +62,19 @@
       <Setter Property="CornerRadius" Value="5"/>
       <Setter Property="FontSize" Value="12"/>
       <Setter Property="Margin" Value="0,3,0,0"/>
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Name="bg" Background="{TemplateBinding Background}" CornerRadius="5" Padding="{TemplateBinding Padding}">
+            <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"
+                              HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Border>
+        </ControlTemplate>
+      </Setter>
     </Style>
+    <Style Selector="Button.accent:pointerover /template/ Border#bg">
+      <Setter Property="Background" Value="#19B4FF"/>
+    </Style>
+
     <Style Selector="Button.danger">
       <Setter Property="Background" Value="#B03A3A"/>
       <Setter Property="Foreground" Value="#FFFFFF"/>
@@ -53,7 +83,22 @@
       <Setter Property="CornerRadius" Value="5"/>
       <Setter Property="FontSize" Value="12"/>
       <Setter Property="Margin" Value="0,3,0,0"/>
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Name="bg" Background="{TemplateBinding Background}" CornerRadius="5" Padding="{TemplateBinding Padding}">
+            <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"
+                              HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Border>
+        </ControlTemplate>
+      </Setter>
     </Style>
+    <Style Selector="Button.danger:pointerover /template/ Border#bg">
+      <Setter Property="Background" Value="#C94A4A"/>
+    </Style>
+    <Style Selector="Button.danger:disabled /template/ Border#bg">
+      <Setter Property="Opacity" Value="0.4"/>
+    </Style>
+
     <Style Selector="TextBox.search">
       <Setter Property="Background" Value="#333337"/>
       <Setter Property="Foreground" Value="#FFFFFF"/>
@@ -137,21 +182,26 @@
             </Grid>
           </Border>
           <Border Background="#252526" BorderBrush="#3E3E42" BorderThickness="1,0,1,1" CornerRadius="0,0,7,7">
-            <ListBox x:Name="FilesList" Background="Transparent" BorderThickness="0"
-                     SelectionMode="Multiple" SelectionChanged="FilesList_SelectionChanged"
-                     DoubleTapped="FilesList_DoubleTapped">
-              <ListBox.ItemTemplate>
-                <DataTemplate x:DataType="local:TextureItem">
-                  <Grid ColumnDefinitions="3*,0.7*,0.9*,4*,1.1*" Margin="3,1">
-                    <TextBlock Grid.Column="0" Text="{Binding Name}" Foreground="#FFFFFF" FontSize="12" TextTrimming="CharacterEllipsis"/>
-                    <TextBlock Grid.Column="1" Text="{Binding Type}" Foreground="#AAAAAA" FontSize="10.5"/>
-                    <TextBlock Grid.Column="2" Text="{Binding SizeText}" Foreground="#AAAAAA" FontSize="10.5"/>
-                    <TextBlock Grid.Column="3" Text="{Binding Path}" Foreground="#777777" FontSize="10.5" TextTrimming="CharacterEllipsis"/>
-                    <TextBlock Grid.Column="4" Text="{Binding Status}" Foreground="#AAAAAA" FontSize="10.5" TextTrimming="CharacterEllipsis"/>
-                  </Grid>
-                </DataTemplate>
-              </ListBox.ItemTemplate>
-            </ListBox>
+            <Grid>
+              <ListBox x:Name="FilesList" Background="Transparent" BorderThickness="0"
+                       SelectionMode="Multiple" SelectionChanged="FilesList_SelectionChanged"
+                       DoubleTapped="FilesList_DoubleTapped">
+                <ListBox.ItemTemplate>
+                  <DataTemplate x:DataType="local:TextureItem">
+                    <Grid ColumnDefinitions="3*,0.7*,0.9*,4*,1.1*" Margin="3,1">
+                      <TextBlock Grid.Column="0" Text="{Binding Name}" Foreground="#FFFFFF" FontSize="12" TextTrimming="CharacterEllipsis"/>
+                      <TextBlock Grid.Column="1" Text="{Binding Type}" Foreground="#AAAAAA" FontSize="10.5"/>
+                      <TextBlock Grid.Column="2" Text="{Binding SizeText}" Foreground="#AAAAAA" FontSize="10.5"/>
+                      <TextBlock Grid.Column="3" Text="{Binding Path}" Foreground="#777777" FontSize="10.5" TextTrimming="CharacterEllipsis"/>
+                      <TextBlock Grid.Column="4" Text="{Binding Status}" Foreground="#AAAAAA" FontSize="10.5" TextTrimming="CharacterEllipsis"/>
+                    </Grid>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+              <TextBlock x:Name="EmptyHint" Text="No files yet — use Add files or Add folder"
+                         Foreground="#555555" FontSize="12"
+                         HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
           </Border>
         </DockPanel>
 

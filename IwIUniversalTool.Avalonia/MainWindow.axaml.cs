@@ -136,6 +136,7 @@ public partial class MainWindow : Window
     {
         _all.Clear();
         _view.Clear();
+        EmptyHint.IsVisible = true;
         StatusText.Text = "List cleared.";
         Log("List cleared.");
     }
@@ -163,6 +164,7 @@ public partial class MainWindow : Window
                 _view.Add(item);
         }
         StatusText.Text = $"Files: {_all.Count} · shown: {_view.Count}";
+        EmptyHint.IsVisible = _view.Count == 0;
     }
 
     // ---------------------------------------------------------------- сохранение

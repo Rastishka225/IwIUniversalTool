@@ -15,6 +15,7 @@
 		<PackageReference Include="Avalonia" Version="11.3.23" />
 		<PackageReference Include="Avalonia.Desktop" Version="11.3.23" />
 		<PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.23" />
+		<PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.23" />
 	</ItemGroup>
 
 	<!-- Общее ядро: те же кодеки, что в Windows/WPF и CLI -->
