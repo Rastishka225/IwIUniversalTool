@@ -311,6 +311,10 @@ public partial class MainWindow : Window
 
     private async void PreviewButton_Click(object? sender, RoutedEventArgs e) => await OpenPreviewAsync();
 
+    private void SettingsButton_Click(object? sender, RoutedEventArgs e) => new SettingsWindow().Show(this);
+
+    private void AboutButton_Click(object? sender, RoutedEventArgs e) => new AboutWindow().Show(this);
+
     private async void FilesList_DoubleTapped(object? sender, TappedEventArgs e) => await OpenPreviewAsync();
 
     private async Task OpenPreviewAsync()

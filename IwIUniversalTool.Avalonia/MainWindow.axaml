@@ -107,6 +107,77 @@
       <Setter Property="Padding" Value="7,4"/>
       <Setter Property="FontSize" Value="12"/>
     </Style>
+
+    <Style Selector="Button.tab">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Foreground" Value="#CCCCCC"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="Padding" Value="6,5"/>
+      <Setter Property="CornerRadius" Value="5"/>
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Name="bg" Background="{TemplateBinding Background}" CornerRadius="5" Padding="{TemplateBinding Padding}">
+            <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"
+                              HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+    <Style Selector="Button.tab:pointerover /template/ Border#bg">
+      <Setter Property="Background" Value="#3E3E42"/>
+    </Style>
+
+    <Style Selector="Button.icon">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="Padding" Value="5"/>
+      <Setter Property="CornerRadius" Value="5"/>
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Name="bg" Background="{TemplateBinding Background}" CornerRadius="5" Padding="{TemplateBinding Padding}">
+            <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"
+                              HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+    <Style Selector="Button.icon:pointerover /template/ Border#bg">
+      <Setter Property="Background" Value="#3E3E42"/>
+    </Style>
+    <Style Selector="Button.icon Path">
+      <Setter Property="Fill" Value="#CCCCCC"/>
+      <Setter Property="Width" Value="16"/>
+      <Setter Property="Height" Value="16"/>
+      <Setter Property="Stretch" Value="Uniform"/>
+    </Style>
+
+    <Style Selector="CheckBox">
+      <Setter Property="Foreground" Value="#FFFFFF"/>
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="Template">
+        <ControlTemplate>
+          <StackPanel Orientation="Horizontal" Spacing="7" Background="Transparent">
+            <Border Name="box" Width="16" Height="16" CornerRadius="4"
+                    Background="#1E1E1E" BorderBrush="#3E3E42" BorderThickness="1"
+                    VerticalAlignment="Center">
+              <Path Name="check" Data="M 3 7 L 6 10 L 11 4"
+                    Stroke="#FFFFFF" StrokeThickness="2" IsVisible="False"/>
+            </Border>
+            <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"
+                              VerticalAlignment="Center"/>
+          </StackPanel>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+    <Style Selector="CheckBox:checked /template/ Border#box">
+      <Setter Property="Background" Value="#00A2ED"/>
+      <Setter Property="BorderBrush" Value="#00A2ED"/>
+    </Style>
+    <Style Selector="CheckBox:checked /template/ Path#check">
+      <Setter Property="IsVisible" Value="True"/>
+    </Style>
+
   </Window.Styles>
 
   <DockPanel>
@@ -118,7 +189,11 @@
         <Button x:Name="RemoveButton" Classes="tool" Content="Remove selected" Click="RemoveButton_Click"/>
         <Button x:Name="ClearButton" Classes="tool" Content="Clear list" Click="ClearButton_Click"/>
         <Button x:Name="RefreshButton" Classes="tool" Content="Refresh" Click="RefreshButton_Click"/>
-        <Button x:Name="PreviewButton" Classes="tool" Content="Preview" Click="PreviewButton_Click"/>
+        <Button x:Name="PreviewButton" Classes="tool" Click="PreviewButton_Click" Width="32" Height="28" Padding="6"
+                ToolTip.Tip="Preview (double-click a file)">
+          <Path Data="M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z"
+                Fill="#CCCCCC" Width="16" Height="16" Stretch="Uniform"/>
+        </Button>
         <TextBox x:Name="SearchBox" Classes="search" Width="230" Watermark="Search by name…" TextChanged="SearchBox_TextChanged"/>
       </StackPanel>
     </Border>
@@ -140,12 +215,22 @@
               <TextBlock Text="IwI Universal Tool" Foreground="#FFFFFF" FontWeight="SemiBold" FontSize="14"/>
               <TextBlock Text="CoD texture converter" Foreground="#AAAAAA" FontSize="10.5"/>
             </StackPanel>
+            <Button x:Name="SettingsButton" Classes="icon" Margin="2,0,0,0" VerticalAlignment="Center"
+                    ToolTip.Tip="Settings" Click="SettingsButton_Click">
+              <Path Data="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.65 15.48,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.52,5.32 7.96,5.65 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.52,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.48,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+            </Button>
+            <Button x:Name="AboutButton" Classes="icon" VerticalAlignment="Center"
+                    ToolTip.Tip="About" Click="AboutButton_Click">
+              <Path Data="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z"/>
+            </Button>
           </StackPanel>
 
-          <Grid ColumnDefinitions="*,*" ColumnSpacing="5">
-            <Button Grid.Column="0" Classes="accent" Content="Converter" Margin="0" Padding="6,5"/>
-            <Button Grid.Column="1" Classes="tool" Content="Archives" Margin="0" Padding="6,5" IsEnabled="False" ToolTip.Tip="M2: IWD/IPAK"/>
-          </Grid>
+          <Border Background="#333337" CornerRadius="7" Padding="3">
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="3">
+              <Button Grid.Column="0" Classes="tab" Content="Converter" Background="#00A2ED" Foreground="#FFFFFF" Padding="6,5"/>
+              <Button Grid.Column="1" Classes="tab" Content="Archives" Padding="6,5" IsEnabled="False" ToolTip.Tip="M2: IWD/IPAK"/>
+            </Grid>
+          </Border>
 
           <TextBlock Classes="section" Text="CALL OF DUTY VERSION"/>
           <ComboBox x:Name="GameBox" HorizontalAlignment="Stretch" FontSize="12"/>

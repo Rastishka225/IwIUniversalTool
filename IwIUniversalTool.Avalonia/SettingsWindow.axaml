@@ -1,0 +1,17 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="IwIUniversalTool.Avalonia.SettingsWindow"
+        Width="460" Height="300"
+        CanResize="False"
+        Background="#1E1E1E"
+        Title="Settings">
+  <StackPanel Margin="22" Spacing="10">
+    <TextBlock Text="Settings" Foreground="#FFFFFF" FontSize="18" FontWeight="SemiBold"/>
+    <TextBlock Text="The Avalonia port is in progress. Settings, themes and hotkeys will be added in M3."
+               Foreground="#AAAAAA" FontSize="12" TextWrapping="Wrap"/>
+    <TextBlock Text="Windows-only features such as Explorer thumbnails are not available on Linux."
+               Foreground="#AAAAAA" FontSize="12" TextWrapping="Wrap"/>
+    <Button Content="Close" Click="Close_Click" Margin="0,12,0,0" Padding="12,5" CornerRadius="5"
+            Background="#00A2ED" Foreground="#FFFFFF" BorderThickness="0" HorizontalAlignment="Left"/>
+  </StackPanel>
+</Window>
