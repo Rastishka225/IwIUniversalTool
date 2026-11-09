@@ -6,6 +6,8 @@
 
 > Неофициальный проект. Не связан с Activision, Infinity Ward, Treyarch и Plutonium. Игровые файлы в репозиторий не входят.
 
+![IwI Universal Tool — скриншот](docs/screenshot.png)
+
 ## Возможности
 
 - **Просмотр текстур**: IWI, DDS, PNG, TGA, VTF — с зумом, альфа-каналом и информацией о формате/мипмапах.

@@ -6,6 +6,8 @@ A Windows utility for Call of Duty textures: preview, conversion, packing/unpack
 
 > Unofficial project. Not affiliated with Activision, Infinity Ward, Treyarch or Plutonium. No game assets are included in this repository.
 
+![IwI Universal Tool screenshot](docs/screenshot.png)
+
 ## Features
 
 - **Texture preview**: IWI, DDS, PNG, TGA, VTF — with zoom, alpha channel and format/mipmap info.
