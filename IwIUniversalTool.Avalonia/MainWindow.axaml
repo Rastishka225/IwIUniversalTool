@@ -1,0 +1,39 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:IwIUniversalTool.Avalonia"
+        x:Class="IwIUniversalTool.Avalonia.MainWindow"
+        Width="1100" Height="700"
+        MinWidth="760" MinHeight="460"
+        Title="IwI Universal Tool — Avalonia (M1)">
+  <DockPanel Margin="12">
+
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="8" Margin="0,0,0,10">
+      <Button x:Name="AddButton" Content="Add files" Click="AddButton_Click"/>
+      <Button x:Name="ClearButton" Content="Clear" Click="ClearButton_Click"/>
+      <Button x:Name="ConvertSelectedButton" Content="Convert selected" Click="ConvertSelected_Click"/>
+      <Button x:Name="ConvertAllButton" Content="Convert all" Click="ConvertAll_Click"/>
+      <ComboBox x:Name="GameBox" Width="150" SelectedIndex="0"/>
+      <CheckBox x:Name="MipsBox" Content="Mipmaps" IsChecked="True"/>
+    </StackPanel>
+
+    <TextBlock DockPanel.Dock="Bottom" x:Name="StatusText" Margin="2,8,0,0" Opacity="0.8"/>
+
+    <Grid ColumnDefinitions="2*,3*" ColumnSpacing="10">
+      <ListBox x:Name="FilesList" SelectionChanged="FilesList_SelectionChanged">
+        <ListBox.ItemTemplate>
+          <DataTemplate x:DataType="local:TextureItem">
+            <StackPanel Margin="2">
+              <TextBlock Text="{Binding Name}"/>
+              <TextBlock Text="{Binding Status}" FontSize="11" Opacity="0.6"/>
+            </StackPanel>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+
+      <Border Grid.Column="1" Background="#1E1E1E" CornerRadius="8" Padding="8">
+        <Image x:Name="PreviewImage" Stretch="Uniform"/>
+      </Border>
+    </Grid>
+
+  </DockPanel>
+</Window>

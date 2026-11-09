@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net10.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<AssemblyName>IwIUniversalTool.Avalonia</AssemblyName>
+		<RootNamespace>IwIUniversalTool.Avalonia</RootNamespace>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Avalonia" Version="11.3.23" />
+		<PackageReference Include="Avalonia.Desktop" Version="11.3.23" />
+		<PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.23" />
+	</ItemGroup>
+
+	<!-- Общее ядро: те же кодеки, что в Windows/WPF и CLI -->
+	<ItemGroup>
+		<Compile Include="../IwIUniversalTool/IwiCodec.cs" Link="Shared/IwiCodec.cs" />
+		<Compile Include="../IwIUniversalTool/VtfCodec.cs" Link="Shared/VtfCodec.cs" />
+		<Compile Include="../IwIUniversalTool/WaveletCodebook.cs" Link="Shared/WaveletCodebook.cs" />
+		<Compile Include="../IwIUniversalTool/IwiThumbs/TextureBitmap.cs" Link="Shared/TextureBitmap.cs" />
+	</ItemGroup>
+
+</Project>

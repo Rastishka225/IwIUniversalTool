@@ -66,6 +66,31 @@ dotnet publish IwIUniversalTool.Cli -c Release -r linux-x64 --self-contained tru
 
 Supported: `.iwi` → `.dds`, `.vtf` → `.dds`, `.dds` → `.iwi` with `--game cod2|cod4|waw|mw2|mw3|bo1|bo2`.
 
+## Linux GUI (Avalonia, early preview)
+
+The Windows app is WPF and cannot run on Linux. A cross-platform Avalonia port is in progress in `IwIUniversalTool.Avalonia`.
+
+Current M1 preview:
+
+- file list (add/clear);
+- texture preview for IWI/DDS/VTF;
+- IWI → DDS, VTF → DDS, DDS → IWI;
+- game/version selector and mipmap toggle.
+
+Run it on **Windows** (to test the same UI without Linux):
+
+```powershell
+dotnet run --project IwIUniversalTool.Avalonia
+```
+
+Build for Linux:
+
+```bash
+dotnet publish IwIUniversalTool.Avalonia -c Release -r linux-x64 --self-contained true
+```
+
+The full port plan and milestones are in [docs/LINUX-PORT.md](docs/LINUX-PORT.md).
+
 ## Explorer thumbnails
 
 1. Settings → “Thumbnails” → **Enable thumbnails** (requires administrator rights: writes to HKLM).

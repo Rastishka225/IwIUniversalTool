@@ -66,6 +66,31 @@ dotnet publish IwIUniversalTool.Cli -c Release -r linux-x64 --self-contained tru
 
 Поддерживается: `.iwi` → `.dds`, `.vtf` → `.dds`, `.dds` → `.iwi` с `--game cod2|cod4|waw|mw2|mw3|bo1|bo2`.
 
+## Linux GUI (Avalonia, ранний превью)
+
+Windows-версия на WPF, на Linux она не работает. Кроссплатформенный порт на Avalonia делается в `IwIUniversalTool.Avalonia`.
+
+Что уже есть в M1:
+
+- список файлов (добавить/очистить);
+- превью IWI/DDS/VTF;
+- IWI → DDS, VTF → DDS, DDS → IWI;
+- выбор игры/версии и мипмапы.
+
+Запуск на **Windows** (чтобы проверить тот же интерфейс без Linux):
+
+```powershell
+dotnet run --project IwIUniversalTool.Avalonia
+```
+
+Сборка под Linux:
+
+```bash
+dotnet publish IwIUniversalTool.Avalonia -c Release -r linux-x64 --self-contained true
+```
+
+Полный план и этапы — в [docs/LINUX-PORT.md](docs/LINUX-PORT.md).
+
 ## Миниатюры в Проводнике
 
 1. Настройки → «Миниатюры» → **Включить миниатюры** (нужны права администратора: запись в HKLM).

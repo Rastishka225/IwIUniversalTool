@@ -91,7 +91,7 @@ dotnet publish IwIUniversalTool.Avalonia -c Release -r linux-x64 --self-containe
 ## Status
 
 - [x] cross-platform CLI converter (`IwIUniversalTool.Cli`)
-- [ ] M1 Avalonia shell
+- [~] M1 Avalonia shell: file list + preview + IWI/VTF/DDS conversion (no drag & drop yet)
 - [ ] M2 archives
 - [ ] M3 parity
 - [ ] M4 Linux packaging

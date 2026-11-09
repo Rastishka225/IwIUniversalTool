@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="IwIUniversalTool/IwIUniversalTool.csproj" />
   <Project Path="IwIUniversalTool.Cli/IwIUniversalTool.Cli.csproj" />
+  <Project Path="IwIUniversalTool.Avalonia/IwIUniversalTool.Avalonia.csproj" />
 </Solution>
