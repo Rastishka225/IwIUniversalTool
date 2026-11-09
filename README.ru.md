@@ -1,4 +1,4 @@
-# IwI Universal Tool
+﻿# IwI Universal Tool
 
 [English](README.md) | [Русский](README.ru.md)
 
@@ -46,52 +46,6 @@ IwIUniversalTool\bin\Release\net10.0-windows\win-x64\publish\IwIUniversalTool.ex
 ```
 
 Подробнее — в [BUILD.md](BUILD.md).
-
-## Linux / CLI
-
-Графический интерфейс — только Windows (WPF + COM Проводника). Для Linux есть небольшой **кроссплатформенный CLI-конвертер** в `IwIUniversalTool.Cli`: без GUI и миниатюр, но с теми же кодеками.
-
-Полный порт GUI на Avalonia запланирован; план — в [docs/LINUX-PORT.md](docs/LINUX-PORT.md).
-
-```bash
-# из исходников (нужен .NET 10 SDK)
-dotnet run --project IwIUniversalTool.Cli -- info image.iwi
-dotnet run --project IwIUniversalTool.Cli -- convert image.iwi
-dotnet run --project IwIUniversalTool.Cli -- convert image.dds --game bo2
-
-# самодостаточный бинарник для Linux
-dotnet publish IwIUniversalTool.Cli -c Release -r linux-x64 --self-contained true
-# результат: IwIUniversalTool.Cli/bin/Release/net10.0/linux-x64/publish/iwi-tool
-```
-
-Поддерживается: `.iwi` → `.dds`, `.vtf` → `.dds`, `.dds` → `.iwi` с `--game cod2|cod4|waw|mw2|mw3|bo1|bo2`.
-
-## Linux GUI (Avalonia, ранний превью)
-
-Windows-версия на WPF, на Linux она не работает. Кроссплатформенный порт на Avalonia делается в `IwIUniversalTool.Avalonia`.
-
-Что уже есть в M1:
-
-![Avalonia-превью](docs/screenshot-avalonia.png)
-
-- список файлов (файлы/папка, удалить, очистить, поиск);
-- превью IWI/DDS/VTF;
-- IWI → DDS, VTF → DDS, DDS → IWI;
-- выбор игры/версии, мипмапы, папка сохранения, лог и кнопка Stop.
-
-Запуск на **Windows** (чтобы проверить тот же интерфейс без Linux):
-
-```powershell
-dotnet run --project IwIUniversalTool.Avalonia
-```
-
-Сборка под Linux:
-
-```bash
-dotnet publish IwIUniversalTool.Avalonia -c Release -r linux-x64 --self-contained true
-```
-
-Полный план и этапы — в [docs/LINUX-PORT.md](docs/LINUX-PORT.md).
 
 ## Миниатюры в Проводнике
 

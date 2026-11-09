@@ -1,4 +1,4 @@
-# IwI Universal Tool
+﻿# IwI Universal Tool
 
 [English](README.md) | [Русский](README.ru.md)
 
@@ -46,52 +46,6 @@ IwIUniversalTool\bin\Release\net10.0-windows\win-x64\publish\IwIUniversalTool.ex
 ```
 
 See [BUILD.en.md](BUILD.en.md) for details.
-
-## Linux / CLI
-
-The GUI is Windows-only (WPF + Explorer COM integration). For Linux there is a small cross-platform **CLI converter** in `IwIUniversalTool.Cli` — no GUI and no Explorer thumbnails, but the codecs are the same.
-
-A full Avalonia GUI port is planned; see [docs/LINUX-PORT.md](docs/LINUX-PORT.md).
-
-```bash
-# run from source (requires .NET 10 SDK)
-dotnet run --project IwIUniversalTool.Cli -- info image.iwi
-dotnet run --project IwIUniversalTool.Cli -- convert image.iwi
-dotnet run --project IwIUniversalTool.Cli -- convert image.dds --game bo2
-
-# self-contained Linux binary
-dotnet publish IwIUniversalTool.Cli -c Release -r linux-x64 --self-contained true
-# result: IwIUniversalTool.Cli/bin/Release/net10.0/linux-x64/publish/iwi-tool
-```
-
-Supported: `.iwi` → `.dds`, `.vtf` → `.dds`, `.dds` → `.iwi` with `--game cod2|cod4|waw|mw2|mw3|bo1|bo2`.
-
-## Linux GUI (Avalonia, early preview)
-
-The Windows app is WPF and cannot run on Linux. A cross-platform Avalonia port is in progress in `IwIUniversalTool.Avalonia`.
-
-Current M1 preview:
-
-![Avalonia preview](docs/screenshot-avalonia.png)
-
-- file list (add files/folder, remove, clear, search);
-- texture preview for IWI/DDS/VTF;
-- IWI → DDS, VTF → DDS, DDS → IWI;
-- game/version selector, mipmap toggle, output folder, log and stop button.
-
-Run it on **Windows** (to test the same UI without Linux):
-
-```powershell
-dotnet run --project IwIUniversalTool.Avalonia
-```
-
-Build for Linux:
-
-```bash
-dotnet publish IwIUniversalTool.Avalonia -c Release -r linux-x64 --self-contained true
-```
-
-The full port plan and milestones are in [docs/LINUX-PORT.md](docs/LINUX-PORT.md).
 
 ## Explorer thumbnails
 
