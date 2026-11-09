@@ -1,0 +1,38 @@
+<Project>
+  <!--
+    Автоматическая сборка компонента миниатюр (IwiThumbs) вместо ручного BuildThumbnails.cmd.
+
+    Компонент собирается перед компиляцией основного проекта и ВСТРАИВАЕТСЯ в exe как ресурсы.
+    При нажатии «Включить миниатюры» программа распаковывает его в
+    %LOCALAPPDATA%\IwIUniversalTool\Thumbnails и регистрирует оттуда.
+    Поэтому рядом с опубликованным exe никаких лишних файлов нет.
+  -->
+  <PropertyGroup>
+    <ThumbnailsBuildDir>$(MSBuildProjectDirectory)\obj\Thumbnails\</ThumbnailsBuildDir>
+  </PropertyGroup>
+
+  <Target Name="BuildAndEmbedThumbnails"
+          BeforeTargets="PrepareForBuild"
+          Condition="'$(MSBuildProjectName)' == 'IwIUniversalTool' and Exists('$(MSBuildProjectDirectory)\IwiThumbs\IwiThumbs.csproj')">
+    <!--
+      RemoveProperties обязателен: при публикации из Visual Studio свойства SelfContained и
+      RuntimeIdentifier передаются глобально всем проектам решения. Для IwiThumbs это недопустимо —
+      COM-хост (.NET COM host) не поддерживает self-contained, а в project.assets.json нет цели
+      win-x64. Поэтому дочерняя сборка выполняется без RID и без self-contained.
+    -->
+    <MSBuild Projects="$(MSBuildProjectDirectory)\IwiThumbs\IwiThumbs.csproj"
+             Targets="Build"
+             RemoveProperties="SelfContained;RuntimeIdentifier;RuntimeIdentifiers;PublishSingleFile;PublishReadyToRun;PublishDir;AppendRuntimeIdentifierToOutputPath"
+             Properties="Configuration=$(Configuration);Platform=x64;SelfContained=false;OutputPath=$(ThumbnailsBuildDir);AppendTargetFrameworkToOutputPath=false;AppendRuntimeIdentifierToOutputPath=false" />
+    <ItemGroup>
+      <EmbeddedResource Include="$(ThumbnailsBuildDir)IwiThumbs.comhost.dll"
+                        LogicalName="IwIUniversalTool.Thumbnails.IwiThumbs.comhost.dll" />
+      <EmbeddedResource Include="$(ThumbnailsBuildDir)IwiThumbs.dll"
+                        LogicalName="IwIUniversalTool.Thumbnails.IwiThumbs.dll" />
+      <EmbeddedResource Include="$(ThumbnailsBuildDir)IwiThumbs.deps.json"
+                        LogicalName="IwIUniversalTool.Thumbnails.IwiThumbs.deps.json" />
+      <EmbeddedResource Include="$(ThumbnailsBuildDir)IwiThumbs.runtimeconfig.json"
+                        LogicalName="IwIUniversalTool.Thumbnails.IwiThumbs.runtimeconfig.json" />
+    </ItemGroup>
+  </Target>
+</Project>

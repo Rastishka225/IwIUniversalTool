@@ -1,0 +1,30 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+[Pp]ublish/
+*.user
+*.suo
+*.pubxml.user
+
+# Visual Studio / Rider
+.vs/
+.idea/
+*.sln.docstates
+*.DotSettings.user
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+*.cache
+
+# Runtime settings (created next to the exe)
+settings.json
+
+# OS
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Local test output
+_diag/

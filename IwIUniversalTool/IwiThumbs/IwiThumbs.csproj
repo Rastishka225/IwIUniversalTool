@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!--
+		Миниатюры текстур в проводнике Windows (.iwi и .vtf). Это COM-компонент: проводник загружает его из DLL.
+		Собирается отдельно (BuildThumbnails.cmd в папке проекта) в папку Thumbnails, затем включается в настройках программы.
+		Кодеки IWI/VTF берутся из основного проекта (общие файлы), поэтому чтение текстур такое же, как в предпросмотре.
+	-->
+	<PropertyGroup>
+		<TargetFramework>net10.0-windows</TargetFramework>
+		<OutputType>Library</OutputType>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<AssemblyName>IwiThumbs</AssemblyName>
+		<RootNamespace>IwiThumbs</RootNamespace>
+		<Version>1.3.0</Version>
+		<PlatformTarget>x64</PlatformTarget>
+
+		<!-- COM-хост: появится IwiThumbs.comhost.dll, который и регистрируется в системе -->
+		<EnableComHosting>true</EnableComHosting>
+		<EnableDynamicLoading>true</EnableDynamicLoading>
+		<GenerateDocumentationFile>false</GenerateDocumentationFile>
+		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="..\IwiCodec.cs" Link="Shared\IwiCodec.cs" />
+		<Compile Include="..\VtfCodec.cs" Link="Shared\VtfCodec.cs" />
+		<Compile Include="..\WaveletCodebook.cs" Link="Shared\WaveletCodebook.cs" />
+	</ItemGroup>
+
+</Project>
