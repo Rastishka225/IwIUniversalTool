@@ -72,10 +72,12 @@ The Windows app is WPF and cannot run on Linux. A cross-platform Avalonia port i
 
 Current M1 preview:
 
-- file list (add/clear);
+![Avalonia preview](docs/screenshot-avalonia.png)
+
+- file list (add files/folder, remove, clear, search);
 - texture preview for IWI/DDS/VTF;
 - IWI → DDS, VTF → DDS, DDS → IWI;
-- game/version selector and mipmap toggle.
+- game/version selector, mipmap toggle, output folder, log and stop button.
 
 Run it on **Windows** (to test the same UI without Linux):
 
