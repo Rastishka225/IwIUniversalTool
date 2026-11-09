@@ -51,6 +51,8 @@ IwIUniversalTool\bin\Release\net10.0-windows\win-x64\publish\IwIUniversalTool.ex
 
 Графический интерфейс — только Windows (WPF + COM Проводника). Для Linux есть небольшой **кроссплатформенный CLI-конвертер** в `IwIUniversalTool.Cli`: без GUI и миниатюр, но с теми же кодеками.
 
+Полный порт GUI на Avalonia запланирован; план — в [docs/LINUX-PORT.md](docs/LINUX-PORT.md).
+
 ```bash
 # из исходников (нужен .NET 10 SDK)
 dotnet run --project IwIUniversalTool.Cli -- info image.iwi

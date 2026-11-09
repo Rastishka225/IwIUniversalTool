@@ -51,6 +51,8 @@ See [BUILD.en.md](BUILD.en.md) for details.
 
 The GUI is Windows-only (WPF + Explorer COM integration). For Linux there is a small cross-platform **CLI converter** in `IwIUniversalTool.Cli` — no GUI and no Explorer thumbnails, but the codecs are the same.
 
+A full Avalonia GUI port is planned; see [docs/LINUX-PORT.md](docs/LINUX-PORT.md).
+
 ```bash
 # run from source (requires .NET 10 SDK)
 dotnet run --project IwIUniversalTool.Cli -- info image.iwi
