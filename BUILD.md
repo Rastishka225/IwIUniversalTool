@@ -1,5 +1,7 @@
 # Как собрать релизный `.exe`
 
+[English](BUILD.en.md) | [Русский](BUILD.md)
+
 Нужен **.NET 10 SDK** или Visual Studio 2026 с рабочей нагрузкой .NET Desktop на Windows x64.
 
 ## Через Visual Studio

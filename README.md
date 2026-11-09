@@ -1,68 +1,70 @@
 # IwI Universal Tool
 
-Утилита для работы с текстурами Call of Duty: просмотр, конвертация, упаковка и распаковка игровых архивов, миниатюры в Проводнике Windows.
+[English](README.md) | [Русский](README.ru.md)
 
-> Неофициальный проект. Не связан с Activision, Infinity Ward, Treyarch и Plutonium. Игровые файлы в репозиторий не входят.
+A Windows utility for Call of Duty textures: preview, conversion, packing/unpacking game archives, and Explorer thumbnails.
 
-## Возможности
+> Unofficial project. Not affiliated with Activision, Infinity Ward, Treyarch or Plutonium. No game assets are included in this repository.
 
-- **Просмотр текстур**: IWI, DDS, PNG, TGA, VTF — с зумом, альфа-каналом и информацией о формате/мипмапах.
-- **Конвертация**: PNG/TGA/DDS ↔ IWI и DDS, включая DXT1/DXT3/DXT5, BC5 и R8.
-- **Архивы Call of Duty**: IWD (ZIP) и IPAK (Black Ops 2) — просмотр содержимого, замена текстур, упаковка.
-- **Замена файла в архиве**: двойной клик по файлу из архива, выбор внешнего файла, статус «Заменится».
-- **Миниатюры в Проводнике** для `.iwi` и `.vtf` (компонент `IwiThumbs`, регистрируется в HKLM).
-- **Горячие клавиши**, в том числе кнопки мыши, с включением/выключением.
-- **Сжатие IWD** без роста архива: сжимаются только записи, которым это реально выгодно.
-- **IWI-версии**: v5 (CoD2), v6 (CoD4/WaW/MW2), v8 (MW2/MW3), v13 (BO1), v27 (BO2), включая мипмапы.
-- **Wavelet-текстуры CoD4** декодируются без внешнего `wavelet_tables.bin` — таблицы собираются из компактного описания в коде.
+## Features
 
-## Требования
+- **Texture preview**: IWI, DDS, PNG, TGA, VTF — with zoom, alpha channel and format/mipmap info.
+- **Conversion**: PNG/TGA/DDS ↔ IWI and DDS, including DXT1/DXT3/DXT5, BC5 and R8.
+- **Call of Duty archives**: IWD (ZIP) and IPAK (Black Ops 2) — browse contents, replace textures, pack.
+- **Replace a file in an archive**: double-click an archive entry, pick an external file, status shows “Will be replaced”.
+- **Explorer thumbnails** for `.iwi` and `.vtf` (the `IwiThumbs` component, registered in HKLM).
+- **Hotkeys**, including mouse buttons, with on/off toggles.
+- **IWD recompression that never grows the archive**: only entries that actually get smaller are compressed.
+- **IWI versions**: v5 (CoD2), v6 (CoD4/WaW/MW2), v8 (MW2/MW3), v13 (BO1), v27 (BO2), including mipmaps.
+- **CoD4 wavelet textures** are decoded without an external `wavelet_tables.bin` — the tables are generated from a compact description in code.
 
-**Для запуска готового `.exe`:**
+## Requirements
+
+**To run the published `.exe`:**
 
 - Windows 10/11 x64.
-- Сам `.exe` самодостаточный, .NET ставить не нужно **кроме** миниатюр в Проводнике: для них нужен **.NET 10 Desktop Runtime**. Программа предложит скачать его при проверке миниатюр.
+- The `.exe` is self-contained, no .NET installation is required — **except** for Explorer thumbnails, which need the **.NET 10 Desktop Runtime**. The app offers to download it when you test thumbnails.
 
-**Для сборки:**
+**To build:**
 
-- .NET 10 SDK или Visual Studio 2026 с рабочей нагрузкой .NET Desktop.
+- .NET 10 SDK, or Visual Studio 2026 with the .NET Desktop workload.
 - Windows x64.
 
-## Сборка
+## Build
 
 ```powershell
 cd IwIUniversalTool
 dotnet publish -c Release -r win-x64
 ```
 
-Результат — один файл:
+Output — a single file:
 
 ```text
 IwIUniversalTool\bin\Release\net10.0-windows\win-x64\publish\IwIUniversalTool.exe
 ```
 
-Подробнее — в [BUILD.md](BUILD.md).
+See [BUILD.en.md](BUILD.en.md) for details.
 
-## Миниатюры в Проводнике
+## Explorer thumbnails
 
-1. Настройки → «Миниатюры» → **Включить миниатюры** (нужны права администратора: запись в HKLM).
-2. Если значки не обновились — **Сбросить кэш миниатюр и перезапустить проводник**.
-3. Для работы компонента нужен .NET 10 Desktop Runtime; кнопка «Проверить миниатюры» покажет ошибку и предложит скачать.
+1. Settings → “Thumbnails” → **Enable thumbnails** (requires administrator rights: writes to HKLM).
+2. If the icons do not refresh — **Reset thumbnail cache and restart Explorer**.
+3. The component needs the .NET 10 Desktop Runtime; the “Test thumbnails” button reports the error and offers the download link.
 
-## Использование
+## Usage
 
-1. Перетащи текстуры или папку в окно программы (или открой файл через «Открыть»).
-2. Двойной клик по файлу из архива — назначить замену.
-3. Для упаковки: выбери версию игры, архив и нажми «Упаковать».
+1. Drag textures or a folder into the app window (or open a file via “Open”).
+2. Double-click an archive entry to assign a replacement.
+3. To pack: choose the game version, the archive and press “Pack”.
 
-Настройки хранятся в `settings.json` рядом с `.exe`; компонент миниатюр при необходимости распаковывается в `%LOCALAPPDATA%\IwIUniversalTool`.
+Settings are stored in `settings.json` next to the `.exe`; the thumbnail component is extracted to `%LOCALAPPDATA%\IwIUniversalTool` when needed.
 
-## Ограничения
+## Limitations
 
-- Нет встроенных игровых ресурсов: для работы нужны твои собственные файлы игры.
-- Поддержка форматов основана на сообществе и анализе файлов; некоторые экзотические варианты IWI могут не читаться.
-- IPAK не содержит имён текстур — в списке они называются по хешу.
+- No bundled game assets: you need your own game files.
+- Format support is community-driven and based on file analysis; some exotic IWI variants may not be readable.
+- IPAK stores no texture names — entries are listed by hash.
 
-## Лицензия
+## License
 
-MIT — см. [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE).
