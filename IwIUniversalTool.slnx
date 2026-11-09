@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="IwIUniversalTool/IwIUniversalTool.csproj" />
+  <Project Path="IwIUniversalTool.Cli/IwIUniversalTool.Cli.csproj" />
 </Solution>

@@ -785,6 +785,7 @@ namespace IwIUniversalTool
             int sizeEntries = (headerSize - sizesOffset) / 4;
 
             int levels = offs.Count;
+            bool hasMips = withMips && levels > 1; // один уровень — всегда «без мипмапов»
             long total = headerSize;
             foreach (int len in lens) total += len;
             if (total > int.MaxValue) throw new InvalidDataException("Текстура слишком большая.");
@@ -798,7 +799,7 @@ namespace IwIUniversalTool
             if (isV8)
             {
                 // v8: [4..8) — флаги (0 — с мипами, 0x173 — без), [8] — формат, [10]/[12] — размеры.
-                BinaryPrimitives.WriteUInt32LittleEndian(iwi.AsSpan(4, 4), withMips ? 0u : 0x173u);
+                BinaryPrimitives.WriteUInt32LittleEndian(iwi.AsSpan(4, 4), hasMips ? 0u : 0x173u);
                 iwi[8] = (byte)fmt;
                 BinaryPrimitives.WriteUInt16LittleEndian(iwi.AsSpan(10, 2), (ushort)w);
                 BinaryPrimitives.WriteUInt16LittleEndian(iwi.AsSpan(12, 2), (ushort)h);
@@ -809,7 +810,7 @@ namespace IwIUniversalTool
                 // v27 (Black Ops 2): [4] — формат, [5] — флаги (0x10 — с мипами, 0xC3 — без),
                 // [6]/[8] — ширина/высота, таблица размеров с 32-го байта.
                 iwi[4] = (byte)fmt;
-                iwi[5] = (byte)(withMips ? 0x10 : fmt == IwiFormat.R8 ? 0xC2 : 0xC3);
+                iwi[5] = (byte)(hasMips ? 0x10 : fmt == IwiFormat.R8 ? 0xC2 : 0xC3);
                 BinaryPrimitives.WriteUInt16LittleEndian(iwi.AsSpan(6, 2), (ushort)w);
                 BinaryPrimitives.WriteUInt16LittleEndian(iwi.AsSpan(8, 2), (ushort)h);
                 BinaryPrimitives.WriteUInt16LittleEndian(iwi.AsSpan(10, 2), 1);
@@ -818,8 +819,8 @@ namespace IwIUniversalTool
             {
                 iwi[4] = (byte)fmt;
                 iwi[5] = isV13
-                    ? (byte)(withMips ? 0x10 : 0x12)
-                    : (byte)(withMips ? 0x00 : FlagNoMipmaps);
+                    ? (byte)(hasMips ? 0x10 : 0x12)
+                    : (byte)(hasMips ? 0x00 : FlagNoMipmaps);
                 BinaryPrimitives.WriteUInt16LittleEndian(iwi.AsSpan(6, 2), (ushort)w);
                 BinaryPrimitives.WriteUInt16LittleEndian(iwi.AsSpan(8, 2), (ushort)h);
                 if (isV13) BinaryPrimitives.WriteUInt16LittleEndian(iwi.AsSpan(10, 2), 1);
@@ -946,7 +947,8 @@ namespace IwIUniversalTool
 
                 sb.Append(ru ? "    кодек: " : "    codec: ").Append($"IWI v{ver} ({games}), ")
                   .Append(ru ? "формат " : "format ").Append($"0x{fmt:X2} — {fmtName}").Append(wavelet ? (ru ? " (wavelet-сжатие CoD4)" : " (CoD4 wavelet compression)") : "").Append('\n');
-                sb.Append(ru ? "    флаги: " : "    flags: ").Append($"0x{head[5]:X2}, ").Append(ru ? "размер: " : "size: ").Append($"{w}×{h}, ")
+                uint flags = ver == 8 ? U32(head, 4) : head[5];
+                sb.Append(ru ? "    флаги: " : "    flags: ").Append($"0x{flags:X}, ").Append(ru ? "размер: " : "size: ").Append($"{w}×{h}, ")
                   .Append(ru ? "заголовок: " : "header: ").Append(headerSize > 0 ? $"{headerSize} " + (ru ? "байт" : "bytes") : (ru ? "неизвестен" : "unknown")).Append('\n');
 
                 if (headerSize > 0)
