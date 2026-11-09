@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
@@ -38,6 +39,7 @@ public partial class MainWindow : Window
     private readonly ObservableCollection<TextureItem> _view = new();
     private string? _outputDir;
     private CancellationTokenSource? _cts;
+    private PreviewWindow? _previewWindow;
 
     public MainWindow()
     {
@@ -134,8 +136,6 @@ public partial class MainWindow : Window
     {
         _all.Clear();
         _view.Clear();
-        PreviewImage.Source = null;
-        PreviewPlaceholder.IsVisible = true;
         StatusText.Text = "List cleared.";
         Log("List cleared.");
     }
@@ -303,25 +303,41 @@ public partial class MainWindow : Window
 
     private async void FilesList_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        if (FilesList.SelectedItem is not TextureItem item)
-        {
-            PreviewImage.Source = null;
-            PreviewPlaceholder.IsVisible = true;
-            return;
-        }
+        if (FilesList.SelectedItem is TextureItem item)
+            StatusText.Text = $"{item.Name} — {item.Type}, {item.SizeText}";
+    }
+
+    private async void PreviewButton_Click(object? sender, RoutedEventArgs e) => await OpenPreviewAsync();
+
+    private async void FilesList_DoubleTapped(object? sender, TappedEventArgs e) => await OpenPreviewAsync();
+
+    private async Task OpenPreviewAsync()
+    {
+        if (FilesList.SelectedItem is not TextureItem item) return;
 
         try
         {
             var decoded = await Task.Run(() => DecodePreview(item.Path));
-            PreviewImage.Source = CreateBitmap(decoded.Width, decoded.Height, decoded.Bgra);
-            PreviewPlaceholder.IsVisible = false;
-            StatusText.Text = $"{item.Name} — {decoded.Info}";
+            var bitmap = CreateBitmap(decoded.Width, decoded.Height, decoded.Bgra);
+            string info = $"{item.Name} — {decoded.Info}";
+
+            if (_previewWindow is { IsVisible: true })
+            {
+                _previewWindow.ShowImage(bitmap, info);
+                _previewWindow.Activate();
+            }
+            else
+            {
+                _previewWindow = new PreviewWindow();
+                _previewWindow.Closed += (_, _) => _previewWindow = null;
+                _previewWindow.ShowImage(bitmap, info);
+                _previewWindow.Show(this);
+            }
         }
         catch (Exception ex)
         {
-            PreviewImage.Source = null;
-            PreviewPlaceholder.IsVisible = true;
             StatusText.Text = "Preview error: " + ex.Message;
+            Log("Preview error: " + ex.Message);
         }
     }
 
