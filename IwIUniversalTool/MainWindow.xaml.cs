@@ -289,25 +289,14 @@ namespace IwIUniversalTool
 
         private void BtnOpenSettings_Click(object sender, RoutedEventArgs e)
         {
-            while (true)
+            var dialog = new SettingsDialog(this, _settings, isDark => ApplyTheme(isDark), isRu => ApplyLanguage(isRu));
+            if (dialog.ShowDialog() == true)
             {
-                var dialog = new SettingsDialog(this, _settings, isDark => ApplyTheme(isDark), isRu => ApplyLanguage(isRu));
-                bool? result = dialog.ShowDialog();
-                if (dialog.ReopenRequested)
-                {
-                    SaveSettings(); // смена языка/темы сохраняется сразу
-                    continue;
-                }
-
-                if (result == true)
-                {
-                    InitHardwareAcceleration();
-                    if (_settings.ColumnLayout.Count == 0) ApplyColumnLayout(DefaultColumnLayout()); // нажали «Сбросить колонки»
-                    UpdatePreviewTooltip();
-                    SaveSettings();
-                    LogInfo(_settings.IsRussian ? "Настройки сохранены." : "Settings saved.");
-                }
-                break;
+                InitHardwareAcceleration();
+                if (_settings.ColumnLayout.Count == 0) ApplyColumnLayout(DefaultColumnLayout()); // нажали «Сбросить колонки»
+                UpdatePreviewTooltip();
+                SaveSettings();
+                LogInfo(_settings.IsRussian ? "Настройки сохранены." : "Settings saved.");
             }
             RefreshPreviewWindow();
         }
@@ -2204,23 +2193,45 @@ namespace IwIUniversalTool
         [DllImport("dwmapi.dll")]
         private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int value, int size);
 
-        public bool ReopenRequested { get; private set; }
         private Button? _saveButton;
-        private bool _reopening;
+        private readonly Window _owner;
+        private readonly AppSettings _settings;
+        private readonly Action<bool> _onThemeChanged;
+        private readonly Action<bool> _onLanguageChanged;
+        private bool _rebuildAfterSave;
 
-        private void RequestReopen()
+        public SettingsDialog(Window owner, AppSettings settings, Action<bool> onThemeChanged, Action<bool> onLanguageChanged) : base(owner)
         {
-            if (_reopening) return;
-            _reopening = true;
-            ReopenRequested = true;
+            _owner = owner;
+            _settings = settings;
+            _onThemeChanged = onThemeChanged;
+            _onLanguageChanged = onLanguageChanged;
+            BuildUi();
+        }
+
+        private void RebuildLive()
+        {
+            if (_rebuildAfterSave) return;
+            _rebuildAfterSave = true;
             if (_saveButton != null)
                 _saveButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             else
                 CloseWithAnimation(true);
         }
 
-        public SettingsDialog(Window owner, AppSettings settings, Action<bool> onThemeChanged, Action<bool> onLanguageChanged) : base(owner)
+        private void RebuildInPlace()
         {
+            Content = null;
+            BuildUi();
+        }
+
+        private void BuildUi()
+        {
+            var owner = _owner;
+            var settings = _settings;
+            var onThemeChanged = _onThemeChanged;
+            var onLanguageChanged = _onLanguageChanged;
+
             // Отдельное окно, а не «дочернее»: сворачивание главного окна не должно сворачивать настройки.
             Owner = null;
             ShowInTaskbar = true;
@@ -2333,14 +2344,14 @@ namespace IwIUniversalTool
             var cardLang = CreateCard(cardBrush, borderBrush, textBrush, "Язык / Language");
             var segTrack = new SolidColorBrush(isDark ? Color.FromRgb(30, 30, 33) : Color.FromRgb(232, 235, 240));
             var langSeg = new SegmentedControl(new[] { "Русский", "English" }, isRu ? 0 : 1, textBrush, segTrack);
-            langSeg.SelectionChanged += pick => { onLanguageChanged(pick == 0); RequestReopen(); };
+            langSeg.SelectionChanged += pick => { onLanguageChanged(pick == 0); RebuildLive(); };
             ((StackPanel)cardLang.Child).Children.Add(langSeg);
             tabMain.Children.Add(cardLang);
 
             // КАРТОЧКА 2: ТЕМА
             var cardTheme = CreateCard(cardBrush, borderBrush, textBrush, isRu ? "Оформление" : "Appearance");
             var themeSeg = new SegmentedControl(new[] { isRu ? "Тёмная" : "Dark", isRu ? "Светлая" : "Light" }, isDark ? 0 : 1, textBrush, segTrack);
-            themeSeg.SelectionChanged += pick => { onThemeChanged(pick == 0); RequestReopen(); };
+            themeSeg.SelectionChanged += pick => { onThemeChanged(pick == 0); RebuildLive(); };
             ((StackPanel)cardTheme.Child).Children.Add(themeSeg);
             tabMain.Children.Add(cardTheme);
 
@@ -3048,7 +3059,18 @@ namespace IwIUniversalTool
                 settings.PreviewOnOpen = chkOpenPreview.IsChecked == true;
                 settings.DebugMode = chkDebugSetting.IsChecked == true;
                 if (resetColumns) settings.ColumnLayout = new List<ColumnState>();
-                CloseWithAnimation(true);
+
+                if (_rebuildAfterSave)
+                {
+                    // Язык/тема: сохранить текущие значения и перестроить это же окно,
+                    // не закрывая и не открывая его заново.
+                    _rebuildAfterSave = false;
+                    RebuildInPlace();
+                }
+                else
+                {
+                    CloseWithAnimation(true);
+                }
             });
             _saveButton = saveBtn;
             saveBtn.Margin = new Thickness(20, 10, 20, 20);

@@ -35,9 +35,12 @@ namespace IwIUniversalTool
 
         public string ReplacementPath { get; private set; } = "";
 
+        private readonly Window _owner;
+
         public ReplaceEntryWindow(Window owner, bool ru, string entryName, string originalPath, string current)
         {
             _ru = ru;
+            _owner = owner;
             _entryName = entryName;
             _originalPath = originalPath;
 
@@ -216,7 +219,7 @@ namespace IwIUniversalTool
             {
                 Height = 120,
                 CornerRadius = new CornerRadius(8),
-                Background = Res(Owner, "CardBgBrush", SystemColors.ControlLightBrush),
+                Background = Res(_owner, "CardBgBrush", SystemColors.ControlLightBrush),
                 BorderBrush = _border,
                 BorderThickness = new Thickness(1),
                 Child = image
