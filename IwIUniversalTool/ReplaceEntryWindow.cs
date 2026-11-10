@@ -47,7 +47,7 @@ namespace IwIUniversalTool
             _border = Res(owner, "BorderBrush", SystemColors.ControlDarkBrush);
             _input = Res(owner, "InputBgBrush", SystemColors.WindowBrush);
 
-            Owner = owner;
+            Owner = null;
             Title = ru ? "Замена файла в архиве" : "Replace a file in the archive";
             Width = 560;
             MinWidth = 480;
@@ -55,8 +55,8 @@ namespace IwIUniversalTool
             MaxHeight = Math.Max(460, SystemParameters.WorkArea.Height - 100);
             SizeToContent = SizeToContent.Height;
             ResizeMode = ResizeMode.CanResize;
-            WindowStartupLocation = WindowStartupLocation.CenterOwner;
-            ShowInTaskbar = false;
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            ShowInTaskbar = true;
             Background = Res(owner, "WindowBgBrush", SystemColors.WindowBrush);
             Foreground = _text;
             FontFamily = new FontFamily("Segoe UI");

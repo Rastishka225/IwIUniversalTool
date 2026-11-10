@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,16 +27,16 @@ namespace IwIUniversalTool
             _muted = new SolidColorBrush(isDark ? Color.FromRgb(150, 150, 158) : Color.FromRgb(105, 110, 122));
             _border = new SolidColorBrush(isDark ? Color.FromRgb(62, 62, 66) : Color.FromRgb(218, 221, 228));
 
-            Owner = owner;
+            Owner = null;
             Title = isRu ? "О программе" : "About";
             Background = _panel;
             Width = 660;
             Height = Math.Min(640, SystemParameters.WorkArea.Height - 60);
             MinWidth = 560;
             MinHeight = 420;
-            ShowInTaskbar = false;
+            ShowInTaskbar = true;
             ResizeMode = ResizeMode.CanResize;
-            WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             UseLayoutRounding = true;
 
             SourceInitialized += (_, _) =>

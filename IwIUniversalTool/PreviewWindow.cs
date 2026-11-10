@@ -469,15 +469,15 @@ namespace IwIUniversalTool
             _overlayBg = new SolidColorBrush(isDark ? Color.FromArgb(0xDD, 30, 30, 33) : Color.FromArgb(0xEE, 255, 255, 255));
             _hoverBg = new SolidColorBrush(isDark ? Color.FromArgb(0x30, 255, 255, 255) : Color.FromArgb(0x1C, 0, 0, 0));
 
-            Owner = owner;
+            Owner = null;
             Title = isRu ? "Предпросмотр" : "Preview";
             Width = 1060;
             Height = 700;
             MinWidth = 980;
             MinHeight = 460;
-            ShowInTaskbar = false;
+            ShowInTaskbar = true;
             ShowActivated = false; // фокус остаётся в списке — можно листать файлы стрелками
-            WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             Background = _bg;
             UseLayoutRounding = true;
 
