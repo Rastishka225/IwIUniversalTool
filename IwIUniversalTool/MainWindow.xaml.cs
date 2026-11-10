@@ -2199,6 +2199,7 @@ namespace IwIUniversalTool
         private readonly Action<bool> _onThemeChanged;
         private readonly Action<bool> _onLanguageChanged;
         private bool _rebuildAfterSave;
+        private bool _built;
 
         public SettingsDialog(Window owner, AppSettings settings, Action<bool> onThemeChanged, Action<bool> onLanguageChanged) : base(owner)
         {
@@ -2231,11 +2232,16 @@ namespace IwIUniversalTool
             var settings = _settings;
             var onThemeChanged = _onThemeChanged;
             var onLanguageChanged = _onLanguageChanged;
+            bool firstBuild = !_built;
 
             // Отдельное окно, а не «дочернее»: сворачивание главного окна не должно сворачивать настройки.
-            Owner = null;
-            ShowInTaskbar = true;
-            WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            // Owner/ShowInTaskbar можно задавать только до первого показа — при перестройке пропускаем.
+            if (firstBuild)
+            {
+                Owner = null;
+                ShowInTaskbar = true;
+                WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            }
             // общий вид галочек и цвета — как в главном окне
             foreach (var key in new[] { "AccentBrush", "TextBrush", "TextMutedBrush", "BorderBrush", "InputBgBrush", "HoverOverlayBrush" })
             {
@@ -2252,17 +2258,31 @@ namespace IwIUniversalTool
             var borderBrush = new SolidColorBrush(isDark ? Color.FromRgb(62, 62, 66) : Color.FromRgb(215, 218, 224));
 
             // Обычная рамка окна Windows: кнопки «свернуть», «развернуть», «закрыть»; в тёмной теме — тёмный заголовок
-            AllowsTransparency = false;
-            WindowStyle = WindowStyle.SingleBorderWindow;
-            ResizeMode = ResizeMode.CanResize;
-            SizeToContent = SizeToContent.Manual;
+            if (firstBuild)
+            {
+                AllowsTransparency = false;
+                WindowStyle = WindowStyle.SingleBorderWindow;
+                ResizeMode = ResizeMode.CanResize;
+                SizeToContent = SizeToContent.Manual;
+                SourceInitialized += (_, _) =>
+                {
+                    try
+                    {
+                        int dark = isDark ? 1 : 0;
+                        DwmSetWindowAttribute(new WindowInteropHelper(this).Handle, 20, ref dark, sizeof(int));
+                    }
+                    catch { }
+                };
+            }
             Title = isRu ? "Настройки" : "Settings";
             Background = panelBrush;
             Width = 640;
             Height = Math.Min(780, SystemParameters.WorkArea.Height - 60);
             MinWidth = 570;
             MinHeight = 440;
-            SourceInitialized += (_, _) =>
+
+            // при смене темы обновляем тёмный/светлый заголовок уже открытого окна
+            if (!firstBuild)
             {
                 try
                 {
@@ -2270,7 +2290,7 @@ namespace IwIUniversalTool
                     DwmSetWindowAttribute(new WindowInteropHelper(this).Handle, 20, ref dark, sizeof(int));
                 }
                 catch { }
-            };
+            }
 
             var mainBorder = new Border { Background = panelBrush };
 
@@ -3089,6 +3109,7 @@ namespace IwIUniversalTool
             mainBorder.Child = mainGrid;
 
             Content = mainBorder;
+            _built = true;
         }
 
         private Border CreateCard(Brush bg, Brush border, Brush textBrush, string title)
